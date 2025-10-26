@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        width: 300px;
+        padding: 20px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .header h1 {
+        font-size: 18px;
+        margin: 0;
+        color: #333;
+      }
+
+      .status {
+        background: #e8f5e8;
+        border: 1px solid #4caf50;
+        border-radius: 4px;
+        padding: 12px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .status-icon {
+        color: #4caf50;
+        font-size: 20px;
+        margin-right: 8px;
+      }
+
+      .controls {
+        margin-bottom: 15px;
+      }
+
+      .toggle-btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .toggle-btn.enabled {
+        background: #f44336;
+        color: white;
+      }
+
+      .toggle-btn.disabled {
+        background: #4caf50;
+        color: white;
+      }
+
+      .toggle-btn:hover {
+        opacity: 0.9;
+      }
+
+      .info {
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+        line-height: 1.4;
+      }
+
+      .footer {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        text-align: center;
+      }
+
+      .footer a {
+        color: #1976d2;
+        text-decoration: none;
+        font-size: 12px;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Always Open in New Tab</h1>
+    </div>
+
+    <div class="status">
+      <span class="status-icon">✓</span>
+      <span id="status-text">Extension is active</span>
+    </div>
+
+    <div class="controls">
+      <button id="toggle-btn" class="toggle-btn enabled">
+        Disable Extension
+      </button>
+    </div>
+
+    <div class="info">
+      All links will open in new background tabs. You'll stay on your current
+      page while links load in the background.
+    </div>
+
+    <div class="footer">
+      <a href="#" id="options-link">Options</a>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

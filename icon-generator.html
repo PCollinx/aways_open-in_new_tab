@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chrome Extension Icon Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        margin: 10px;
+      }
+      .download-section {
+        margin: 20px 0;
+      }
+      .download-btn {
+        background: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .download-btn:hover {
+        background: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chrome Extension Icon Generator</h1>
+    <p>This will generate PNG icons for your Chrome extension.</p>
+
+    <div id="canvases"></div>
+
+    <div class="download-section">
+      <h3>
+        Right-click on each icon below and "Save image as..." to download:
+      </h3>
+      <div id="download-links"></div>
+    </div>
+
+    <script>
+      function createIcon(size) {
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+
+        // Background
+        ctx.fillStyle = "#2196F3";
+        ctx.fillRect(0, 0, size, size);
+
+        // Border radius effect
+        ctx.globalCompositeOperation = "destination-in";
+        ctx.beginPath();
+        ctx.roundRect(0, 0, size, size, size * 0.125);
+        ctx.fill();
+        ctx.globalCompositeOperation = "source-over";
+
+        // White square in center
+        const margin = size * 0.1875; // 3/16 of size
+        const innerSize = size * 0.625; // 10/16 of size
+        ctx.fillStyle = "white";
+        ctx.fillRect(margin, margin, innerSize, innerSize);
+
+        // Blue inner square
+        const innerMargin = size * 0.25; // 4/16 of size
+        const innerInnerSize = size * 0.5; // 8/16 of size
+        ctx.fillStyle = "#2196F3";
+        ctx.fillRect(innerMargin, innerMargin, innerInnerSize, innerInnerSize);
+
+        // Plus sign in white
+        const plusSize = size * 0.125; // 2/16 of size
+        const plusOffset = size * 0.4375; // 7/16 of size
+        ctx.fillStyle = "white";
+
+        // Horizontal bar
+        ctx.fillRect(
+          plusOffset - plusSize / 2,
+          size / 2 - plusSize / 4,
+          plusSize,
+          plusSize / 2
+        );
+        // Vertical bar
+        ctx.fillRect(
+          size / 2 - plusSize / 4,
+          plusOffset - plusSize / 2,
+          plusSize / 2,
+          plusSize
+        );
+
+        return canvas;
+      }
+
+      function generateIcons() {
+        const sizes = [16, 48, 128];
+        const canvasContainer = document.getElementById("canvases");
+        const downloadContainer = document.getElementById("download-links");
+
+        sizes.forEach((size) => {
+          const canvas = createIcon(size);
+          canvas.title = `${size}x${size} icon`;
+
+          // Add to display
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = `<h4>${size}x${size} icon:</h4>`;
+          wrapper.appendChild(canvas);
+          canvasContainer.appendChild(wrapper);
+
+          // Create download link
+          canvas.toBlob(function (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `icon${size}.png`;
+            link.className = "download-btn";
+            link.textContent = `Download icon${size}.png`;
+            link.onclick = function () {
+              // Cleanup URL after download
+              setTimeout(() => URL.revokeObjectURL(url), 100);
+            };
+            downloadContainer.appendChild(link);
+          });
+        });
+      }
+
+      // Generate icons when page loads
+      generateIcons();
+    </script>
+  </body>
+</html>

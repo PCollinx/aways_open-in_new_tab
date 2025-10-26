@@ -1,0 +1,7 @@
+<!-- Simple 16x16 SVG icon for the extension -->
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <rect width="16" height="16" fill="#2196F3" rx="2"/>
+  <rect x="3" y="3" width="10" height="10" fill="white" rx="1"/>
+  <rect x="4" y="4" width="8" height="8" fill="#2196F3" rx="0.5"/>
+  <path d="M7 6h2v1H8v1h1v1H7V8H6V7h1V6z" fill="white"/>
+</svg>
