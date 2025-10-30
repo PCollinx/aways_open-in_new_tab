@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Web Store Asset Generator</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .container {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        color: #1a73e8;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        color: #333;
+        border-bottom: 2px solid #1a73e8;
+        padding-bottom: 10px;
+      }
+
+      .asset-section {
+        margin-bottom: 40px;
+      }
+
+      canvas {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin: 10px 0;
+        display: block;
+      }
+
+      button {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 10px 5px;
+      }
+
+      button:hover {
+        background: #1557b0;
+      }
+
+      .info {
+        background: #e8f0fe;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .warning {
+        background: #fef7e0;
+        border-left: 4px solid #f9ab00;
+      }
+
+      input[type="file"] {
+        margin: 10px 0;
+        padding: 8px;
+        border: 2px dashed #ddd;
+        border-radius: 6px;
+        width: 100%;
+      }
+
+      .dimension-text {
+        font-family: monospace;
+        background: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎨 Chrome Web Store Asset Generator</h1>
+      <p>Generate properly sized images for your Chrome extension listing</p>
+    </div>
+
+    <!-- Small Promo Tile Generator -->
+    <div class="container">
+      <div class="asset-section">
+        <h2>
+          1. Small Promo Tile <span class="dimension-text">440×280px</span>
+        </h2>
+        <div class="info">
+          <strong>Purpose:</strong> Marketing banner shown in Chrome Web Store
+          promotions
+        </div>
+
+        <canvas id="smallPromo" width="440" height="280"></canvas>
+        <br />
+        <button onclick="generateSmallPromo()">
+          Generate Small Promo Tile
+        </button>
+        <button
+          onclick="downloadCanvas('smallPromo', 'small-promo-tile-440x280.png')"
+        >
+          Download
+        </button>
+      </div>
+    </div>
+
+    <!-- Marquee Promo Tile Generator -->
+    <div class="container">
+      <div class="asset-section">
+        <h2>
+          2. Marquee Promo Tile <span class="dimension-text">1400×560px</span>
+        </h2>
+        <div class="info">
+          <strong>Purpose:</strong> Large banner for featured extensions
+          (optional but recommended)
+        </div>
+
+        <canvas
+          id="marqueePromo"
+          width="700"
+          height="280"
+          style="transform: scale(0.5); transform-origin: top left"
+        ></canvas>
+        <br />
+        <button onclick="generateMarqueePromo()">
+          Generate Marquee Promo Tile
+        </button>
+        <button
+          onclick="downloadCanvas('marqueePromo', 'marquee-promo-tile-1400x560.png')"
+        >
+          Download
+        </button>
+      </div>
+    </div>
+
+    <!-- Screenshot Resizer -->
+    <div class="container">
+      <div class="asset-section">
+        <h2>
+          3. Screenshot Resizer <span class="dimension-text">1280×800px</span>
+        </h2>
+        <div class="info warning">
+          <strong>Mac Screenshot Issue:</strong> Mac screenshots are usually
+          2560×1600 or other sizes. This tool will resize them to the required
+          1280×800px.
+        </div>
+
+        <input
+          type="file"
+          id="screenshotInput"
+          accept="image/*"
+          onchange="loadScreenshot(event)"
+        />
+        <canvas id="screenshotCanvas" width="1280" height="800"></canvas>
+        <br />
+        <button
+          onclick="downloadCanvas('screenshotCanvas', 'screenshot-1280x800.png')"
+          id="downloadScreenshot"
+          disabled
+        >
+          Download Resized Screenshot
+        </button>
+
+        <div class="info">
+          <strong>Tips for great screenshots:</strong><br />
+          • Show your extension popup in action<br />
+          • Capture it working on popular websites (Google, news sites)<br />
+          • Include before/after showing multiple tabs<br />
+          • Make sure text is readable at 1280×800
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function generateSmallPromo() {
+        const canvas = document.getElementById("smallPromo");
+        const ctx = canvas.getContext("2d");
+
+        // Clear canvas
+        ctx.clearRect(0, 0, 440, 280);
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, 440, 280);
+        gradient.addColorStop(0, "#1a73e8");
+        gradient.addColorStop(1, "#4285f4");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 440, 280);
+
+        // Extension icon (simplified)
+        ctx.fillStyle = "white";
+        ctx.fillRect(40, 40, 80, 80);
+        ctx.fillStyle = "#1a73e8";
+        ctx.fillRect(50, 50, 60, 60);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 24px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("↗", 80, 95);
+
+        // Title
+        ctx.fillStyle = "white";
+        ctx.font = "bold 32px Arial";
+        ctx.textAlign = "left";
+        ctx.fillText("Always Open", 140, 70);
+        ctx.fillText("in New Tab", 140, 110);
+
+        // Subtitle
+        ctx.font = "18px Arial";
+        ctx.fillText("Links open in background tabs", 140, 140);
+        ctx.fillText("Stay focused while browsing", 140, 165);
+
+        // Browser mockup
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.fillRect(40, 190, 360, 60);
+        ctx.fillStyle = "#1a73e8";
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Tab 1 (Current)", 100, 210);
+        ctx.fillText("Tab 2 (New)", 180, 210);
+        ctx.fillText("Tab 3 (New)", 260, 210);
+        ctx.fillText("Tab 4 (New)", 340, 210);
+
+        // Active tab indicator
+        ctx.fillStyle = "#34a853";
+        ctx.fillRect(60, 225, 80, 4);
+      }
+
+      function generateMarqueePromo() {
+        const canvas = document.getElementById("marqueePromo");
+        const ctx = canvas.getContext("2d");
+
+        // Set actual size for download
+        canvas.width = 1400;
+        canvas.height = 560;
+
+        // Clear canvas
+        ctx.clearRect(0, 0, 1400, 560);
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, 1400, 560);
+        gradient.addColorStop(0, "#1a73e8");
+        gradient.addColorStop(0.5, "#4285f4");
+        gradient.addColorStop(1, "#34a853");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 1400, 560);
+
+        // Large extension icon
+        ctx.fillStyle = "white";
+        ctx.fillRect(100, 100, 200, 200);
+        ctx.fillStyle = "#1a73e8";
+        ctx.fillRect(120, 120, 160, 160);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 80px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("↗", 200, 230);
+
+        // Large title
+        ctx.fillStyle = "white";
+        ctx.font = "bold 72px Arial";
+        ctx.textAlign = "left";
+        ctx.fillText("Always Open in New Tab", 350, 180);
+
+        // Subtitle
+        ctx.font = "36px Arial";
+        ctx.fillText(
+          "Browse smarter. Links open in background tabs.",
+          350,
+          240
+        );
+        ctx.fillText("Stay focused. Stay productive.", 350, 290);
+
+        // Features
+        ctx.font = "24px Arial";
+        ctx.fillText("✓ Automatic background tab opening", 350, 350);
+        ctx.fillText("✓ Toggle on/off anytime", 350, 385);
+        ctx.fillText("✓ Works on all websites", 350, 420);
+        ctx.fillText("✓ Privacy-focused & secure", 350, 455);
+
+        // Reset canvas display size
+        canvas.style.width = "700px";
+        canvas.style.height = "280px";
+      }
+
+      function loadScreenshot(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const img = new Image();
+        const canvas = document.getElementById("screenshotCanvas");
+        const ctx = canvas.getContext("2d");
+
+        img.onload = function () {
+          // Clear canvas
+          ctx.clearRect(0, 0, 1280, 800);
+
+          // Calculate scaling to fit 1280x800 while maintaining aspect ratio
+          const targetWidth = 1280;
+          const targetHeight = 800;
+          const imgAspect = img.width / img.height;
+          const targetAspect = targetWidth / targetHeight;
+
+          let drawWidth,
+            drawHeight,
+            offsetX = 0,
+            offsetY = 0;
+
+          if (imgAspect > targetAspect) {
+            // Image is wider - fit to height
+            drawHeight = targetHeight;
+            drawWidth = drawHeight * imgAspect;
+            offsetX = (targetWidth - drawWidth) / 2;
+          } else {
+            // Image is taller - fit to width
+            drawWidth = targetWidth;
+            drawHeight = drawWidth / imgAspect;
+            offsetY = (targetHeight - drawHeight) / 2;
+          }
+
+          // Fill background with white
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+          // Draw image
+          ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+          // Enable download button
+          document.getElementById("downloadScreenshot").disabled = false;
+        };
+
+        img.src = URL.createObjectURL(file);
+      }
+
+      function downloadCanvas(canvasId, filename) {
+        const canvas = document.getElementById(canvasId);
+        const link = document.createElement("a");
+        link.download = filename;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
+
+      // Generate default promo images on load
+      window.onload = function () {
+        generateSmallPromo();
+        generateMarqueePromo();
+      };
+    </script>
+  </body>
+</html>
